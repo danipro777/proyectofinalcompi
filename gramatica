@@ -1,0 +1,40 @@
+<programa>      ::= MAIN <bloque> FINBLO
+
+    <bloque>        ::= <sentencia> <bloque>
+                    | <vacio>
+    
+    <sentencia>     ::= <declaracion>
+                    | <lectura>
+                    | <escritura>
+                    | <asignacion>
+    
+    <declaracion>   ::= DEC <variable> <otra_variable> PUYCO
+    
+    <otra_variable> ::= COMA <variable> <otra_variable>
+                    | <vacio>
+    
+    <lectura>       ::= INPUT <variable> PUYCO
+    
+    <escritura>     ::= OUTPUT <variable> PUYCO
+    
+    <asignacion>    ::= <variable> IGUAL <expresion> PUYCO
+    
+    <expresion>     ::= <expresion> SUMA <termino>
+                    | <expresion> RESTA <termino>
+                    | <termino>
+    
+    <termino>       ::= <termino> MULT <factor>
+                    | <termino> DIV <factor>
+                    | <termino> POT <factor>
+                    | <factor>
+    
+    <factor>        ::= PI <expresion> PF
+                    | <variable>
+                    | <numero>
+    
+    <variable>      ::= VAR
+    
+    <numero>        ::= NUM
+    
+    <vacio>         ::= /* vacio */
+    
