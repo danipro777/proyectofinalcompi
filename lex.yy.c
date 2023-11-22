@@ -338,6 +338,8 @@ void yyfree (void *  );
 
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
+/* Begin user sect3 */
+
 typedef unsigned char YY_CHAR;
 
 FILE *yyin = (FILE *) 0, *yyout = (FILE *) 0;
@@ -377,13 +379,13 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[71] =
     {   0,
-       33,   33,   36,   34,   35,    6,    7,    5,    2,   19,
-        3,    4,    1,   16,    9,   15,    8,   33,   33,   33,
-       33,   33,   33,   33,   33,   33,   33,   20,   17,   34,
-       18,   32,   31,    1,   33,   11,   13,   12,   10,   33,
-       33,   33,   33,   26,   33,   33,   33,   33,   33,   14,
-       21,   22,   33,   30,   33,   33,   33,   33,   33,   27,
-       33,   23,   33,   28,   33,   24,   33,   29,   25,    0
+       33,   33,   36,   34,   35,    5,    6,    4,    1,   18,
+        2,    3,   32,   15,    8,   14,    7,   33,   33,   33,
+       33,   33,   33,   33,   33,   33,   33,   19,   16,   34,
+       17,   31,   30,   32,   33,   10,   12,   11,    9,   33,
+       33,   33,   33,   25,   33,   33,   33,   33,   33,   13,
+       20,   21,   33,   29,   33,   33,   33,   33,   33,   26,
+       33,   22,   33,   27,   33,   23,   33,   28,   24,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
@@ -501,7 +503,7 @@ char *yytext;
 #line 1 "proyecto.l"
 #line 2 "proyecto.l"
     #include "proyecto.tab.h"
-#line 505 "lex.yy.c"
+#line 507 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -691,7 +693,7 @@ YY_DECL
 #line 5 "proyecto.l"
 
 
-#line 695 "lex.yy.c"
+#line 697 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -777,167 +779,167 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 7 "proyecto.l"
-{return NUM;    }
+{return SUMA;   }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 8 "proyecto.l"
-{return SUMA;   }
+{return RESTA;  }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 9 "proyecto.l"
-{return RESTA;  }
+{return DIV;    }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 10 "proyecto.l"
-{return DIV;    }
+{return MULT;   }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 11 "proyecto.l"
-{return MULT;   }
+{return PI;     }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 12 "proyecto.l"
-{return PI;     }
+{return PF;     }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 13 "proyecto.l"
-{return PF;     }
+{return MAYOR;  }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 14 "proyecto.l"
-{return MAYOR;  }
+{return MENOR;  }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 15 "proyecto.l"
-{return MENOR;  }
+{return MAYORIG;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 16 "proyecto.l"
-{return MAYORIG;}
+{return MENORIG;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 17 "proyecto.l"
-{return MENORIG;}
+{return IGIG;   }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 18 "proyecto.l"
-{return IGIG;   }
+{return DIF;    }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 19 "proyecto.l"
-{return DIF;    }
+{return OR;     }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 20 "proyecto.l"
-{return OR;     }
+{return IGUAL;  }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 21 "proyecto.l"
-{return IGUAL;  }
+{return PUYCO;  }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 22 "proyecto.l"
-{return PUYCO;  }
+{return INIBLO; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 23 "proyecto.l"
-{return INIBLO; }
+{return FINBLO; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 24 "proyecto.l"
-{return FINBLO; }
+{return COMA;   }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 25 "proyecto.l"
-{return COMA;   }
+{return POT;    }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 26 "proyecto.l"
-{return POT;    }
+{return AND;    }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 27 "proyecto.l"
-{return AND;    }
+{return DEC;    }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 28 "proyecto.l"
-{return DEC;    }
+{return MAIN;   }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 29 "proyecto.l"
-{return MAIN;   }
+{return INPUT;  }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 30 "proyecto.l"
-{return INPUT;  }
+{return OUTPUT; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 31 "proyecto.l"
-{return OUTPUT; }
+{return IF;     }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 32 "proyecto.l"
-{return IF;     }
+{return ELSE;   }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 33 "proyecto.l"
-{return ELSE;   }
+{return THEN;   }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 34 "proyecto.l"
-{return THEN;   }
+{return WHILE;  }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 35 "proyecto.l"
-{return WHILE;  }
+{return FOR;    }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 36 "proyecto.l"
-{return FOR;    }
+{return COMINI;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 37 "proyecto.l"
-{return COMINI;}
+{return COMFIN;}    
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 38 "proyecto.l"
-{return COMFIN;}
+{ yylval.string_val = strdup(yytext); return NUM;    }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 39 "proyecto.l"
-{return VAR;}
+{ yylval.string_val = strdup(yytext); return VAR;   }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
@@ -949,7 +951,7 @@ YY_RULE_SETUP
 #line 41 "proyecto.l"
 ECHO;
 	YY_BREAK
-#line 953 "lex.yy.c"
+#line 955 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1948,3 +1950,6 @@ void yyfree (void * ptr )
 #define YYTABLES_NAME "yytables"
 
 #line 41 "proyecto.l"
+
+
+

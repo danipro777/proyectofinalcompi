@@ -1,87 +1,151 @@
 %{
-    #include <stdio.h>
-    void yyerror(char *mensaje);
-    int yylex();
+#include <stdio.h>
+#include <stdlib.h>
+void yyerror(char *mensaje);
+int yylex();
+char *nuevaTemp(char tipo);
 %}
 
-/*VARIABLES*/
-%token VAR NUM COMA POT
-/*OPERADORES*/
+%union {
+    char* string_val;
+}
+
+%token <string_val> VAR NUM PUYCO PI PF INIBLO FINBLO
+
+%token COMA POT
 %token SUMA RESTA DIV MULT
-/*PARENTESIS*/
-%token PI PF
-/*COMPARADORES*/
 %token MAYOR MENOR MAYORIG MENORIG IGIG DIF
-/*LOGICOS*/
 %token AND OR
-/*ASIGNACION*/
 %token IGUAL
-/*SEPARADOR DE SENTENCIAS*/
-%token PUYCO
-/*BLOQUES*/
-%token INIBLO FINBLO
-/*PALABRAS RESERVADAS*/
 %token DEC MAIN INPUT OUTPUT IF ELSE THEN WHILE FOR
-/*COMENTARIOS*/
 %token COMINI COMFIN
 
+%type <string_val>  termino andor factor asignacion asifor bloque condiciones for expresion vacio ifelse
+
 %%
-programa: MAIN INIBLO bloque FINBLO {printf("Programa correcto, Angely Thomas y Pablo Vasquez");};
+
+programa: MAIN{ printf("main:\n"); }INIBLO bloque FINBLO { printf("Programa correcto, Angely Thomas y Pablo Vasquez\n"); };
 
 bloque: sentencia | sentencia bloque;
 
 sentencia: declaracion | lectura | escritura | asignacion | ifelse | while | for;
 
-declaracion: DEC VAR otravariable PUYCO;
+declaracion: DEC VAR otravariable PUYCO { };
 
-lectura: INPUT VAR PUYCO;
+lectura: INPUT VAR PUYCO { printf("INPUT %s;\n", $2); printf("call input;\n"); printf("pop %s;\n", $2); };
 
-escritura: OUTPUT VAR PUYCO;
+escritura: OUTPUT expresion PUYCO { printf("OUTPUT %s;\n", $2); printf("push %s;\n", $2);};
 
-asignacion: VAR IGUAL expresion PUYCO;
+asignacion: VAR IGUAL expresion PUYCO { printf("%s=%s;\n", $1, $3); };
 
-ifelse: IF PI condiciones PF INIBLO bloque FINBLO ELSE INIBLO bloque FINBLO | IF PI condiciones PF INIBLO bloque FINBLO ;
+ifelse: IF PI condiciones PF INIBLO bloque FINBLO ELSE INIBLO bloque FINBLO {
+    char *label1 = nuevaTemp('l');
+    char *label2 = nuevaTemp('l');
+    char *label3 = nuevaTemp('l');
 
-while:  WHILE PI condiciones PF INIBLO bloque FINBLO;
+    printf("ifz %s goto %s;\n", $3, label1);
+    printf("%s:\n", label1);
+    printf("%s;\n", $7); // Generar código para el bloque dentro del IF
+    printf("goto %s;\n", label2);
+    printf("%s:\n", label1);
+    printf("%s;\n", $11); // Generar código para el bloque dentro del ELSE
+    printf("%s:\n", label2);
+}
+| IF PI condiciones PF INIBLO bloque FINBLO {
+    char *label1 = nuevaTemp('l');
+    char *label2 = nuevaTemp('l');
 
-for: FOR PI asignacion condiciones PUYCO asifor PF INIBLO bloque FINBLO;
+    printf("ifz %s goto %s;\n", $3, label2);
+    printf("%s:\n", label1);
+    printf("%s;\n", $6); // Generar código para el bloque dentro del IF
+    printf("%s:\n", label2);
+};
 
-/*AYUDAS*/
+while: WHILE PI condiciones PF INIBLO bloque FINBLO {
+    char *label1 = nuevaTemp('l');
+    char *label2 = nuevaTemp('l');
 
-asifor: VAR IGUAL expresion;
+    // Generar código para la condición y el bucle
+    printf("%s:\n", label1);
+    printf("if (!(%s)) goto %s;\n", $3, label2);
+    printf("%s;\n", $6);
+    printf("goto %s;\n", label1);
+    printf("%s:\n", label2);
+};
 
-otravariable: COMA VAR otravariable | vacio ;
+for: FOR PI asignacion condiciones PUYCO asifor PF INIBLO bloque FINBLO {
+    char *label1 = nuevaTemp('l');
+    char *label2 = nuevaTemp('l');
 
-andor: AND | OR | vacio;
+    // Código de asignación
+    printf("%s;\n", $3);
 
-expresion: expresion SUMA termino  
-        | expresion RESTA termino 
-        | termino;
+    // Generar código para la condición y el bucle
+    printf("%s:\n", label1);
+    printf("if (!(%s)) goto %s;\n", $5, label2);
+    printf("%s;\n", $9);
+    printf("%s;\n", $7); // Código del bucle
+    printf("goto %s;\n", label1);
+    printf("%s:\n", label2);
+};
 
-condiciones: expresion MAYOR termino andor condiciones
-        | expresion MENOR termino andor condiciones
-        | expresion IGIG termino andor condiciones 
-        | expresion MAYORIG termino andor condiciones
-        | expresion MENORIG termino andor condiciones
-        | expresion DIF termino andor condiciones
-        | vacio;
+asifor: VAR IGUAL expresion PUYCO { printf("%s=%s;\n", $1, $3); };
 
-termino: termino MULT factor | termino DIV factor | termino POT factor | factor;
+otravariable: COMA VAR otravariable { printf("%s;\n", $2); }
+            | vacio;
 
-factor: PI expresion PF | VAR | NUM;
+andor: AND { $$ = "&&"; }
+     | OR { $$ = "||"; }
+     | vacio { $$ = NULL; };
 
-vacio: ;
+expresion: expresion SUMA termino { $$ = nuevaTemp('t'); printf("%s=%s+%s;\n", $$, $1, $3); }
+        | expresion RESTA termino { $$ = nuevaTemp('t'); printf("%s=%s-%s;\n", $$, $1, $3); }
+        | termino { $$ = $1; };
 
+condiciones: expresion MAYOR termino andor condiciones { $$ = nuevaTemp('t'); printf("%s=%s>%s;\n", $$, $1, $3); }
+        | expresion MENOR termino andor condiciones { $$ = nuevaTemp('t'); printf("%s=%s<%s;\n", $$, $1, $3); }
+        | expresion IGIG termino andor condiciones { $$ = nuevaTemp('t'); printf("%s=%s==%s;\n", $$, $1, $3); }
+        | expresion MAYORIG termino andor condiciones { $$ = nuevaTemp('t'); printf("%s=%s>=%s;\n", $$, $1, $3); }
+        | expresion MENORIG termino andor condiciones { $$ = nuevaTemp('t'); printf("%s=%s<=%s;\n", $$, $1, $3); }
+        | expresion DIF termino andor condiciones { $$ = nuevaTemp('t'); printf("%s=%s<>%s;\n", $$, $1, $3); }
+        | vacio { $$ = NULL; };
+
+termino: termino MULT factor { $$ = nuevaTemp('t'); printf("%s=%s*%s;\n", $$, $1, $3); }
+        | termino DIV factor { $$ = nuevaTemp('t'); printf("%s=%s/%s;\n", $$, $1, $3); }
+        | termino POT factor { $$ = nuevaTemp('t'); printf("%s=%s^%s;\n", $$, $1, $3); }
+        | factor { $$ = $1; };
+
+factor: PI expresion PF { $$ = $2; }
+        | VAR { $$ = $1; }
+        | NUM { $$ = $1; };
+
+vacio: { $$ = NULL; };
 
 %%
 
-void yyerror(char *mensaje)
-{
-    fprintf(stderr, "Error: %s\n", mensaje);
+char *nuevaTemp(char tipo) {
+    static int actual_t = 1;
+    static int actual_l = 1;
+    char *temp = malloc(10);
+
+    if (tipo == 't') {
+        sprintf(temp, "t%d", actual_t++);
+    } else if (tipo == 'l') {
+        sprintf(temp, "l%d", actual_l++);
+    } else {
+        fprintf(stderr, "Error: Tipo de etiqueta no válido\n");
+        exit(EXIT_FAILURE);
+    }
+
+    return temp;
 }
 
-int main(int argc, char **argv)
-{
+void yyerror(char *mensaje) {
+    fprintf(stderr, "Error: %s\n", mensaje);
+    exit(EXIT_FAILURE);
+}
+
+int main(int argc, char **argv) {
     yyparse();
     return 0;
 }

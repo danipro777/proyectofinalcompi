@@ -40,26 +40,26 @@
    enum yytokentype {
      VAR = 258,
      NUM = 259,
-     COMA = 260,
-     POT = 261,
-     SUMA = 262,
-     RESTA = 263,
-     DIV = 264,
-     MULT = 265,
-     PI = 266,
-     PF = 267,
-     MAYOR = 268,
-     MENOR = 269,
-     MAYORIG = 270,
-     MENORIG = 271,
-     IGIG = 272,
-     DIF = 273,
-     AND = 274,
-     OR = 275,
-     IGUAL = 276,
-     PUYCO = 277,
-     INIBLO = 278,
-     FINBLO = 279,
+     PUYCO = 260,
+     PI = 261,
+     PF = 262,
+     INIBLO = 263,
+     FINBLO = 264,
+     COMA = 265,
+     POT = 266,
+     SUMA = 267,
+     RESTA = 268,
+     DIV = 269,
+     MULT = 270,
+     MAYOR = 271,
+     MENOR = 272,
+     MAYORIG = 273,
+     MENORIG = 274,
+     IGIG = 275,
+     DIF = 276,
+     AND = 277,
+     OR = 278,
+     IGUAL = 279,
      DEC = 280,
      MAIN = 281,
      INPUT = 282,
@@ -77,7 +77,19 @@
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+{
+
+/* Line 1685 of yacc.c  */
+#line 9 "proyecto.y"
+
+    char* string_val;
+
+
+
+/* Line 1685 of yacc.c  */
+#line 92 "proyecto.tab.h"
+} YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

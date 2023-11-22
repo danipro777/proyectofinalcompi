@@ -4,7 +4,6 @@
 
 %%
 
-[0-9]+      {return NUM;    }
 "+"         {return SUMA;   }
 "-"         {return RESTA;  }
 "/"         {return DIV;    }
@@ -35,6 +34,8 @@ THEN        {return THEN;   }
 WHILE       {return WHILE;  }
 FOR         {return FOR;    }
 "/*"        {return COMINI;}
-"*/"        {return COMFIN;}
-[A-z0-9]*+     {return VAR;}
+"*/"        {return COMFIN;}    
+[0-9]+      { yylval.string_val = strdup(yytext); return NUM;    }
+[A-z0-9]*+  { yylval.string_val = strdup(yytext); return VAR;   }
 .           {}
+%%
