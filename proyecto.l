@@ -5,6 +5,7 @@
 %%
 
 "+"         {return SUMA;   }
+"++"                                {return MASMAS;}
 "-"         {return RESTA;  }
 "/"         {return DIV;    }
 "*"         {return MULT;   }
@@ -35,7 +36,7 @@ WHILE       {return WHILE;  }
 FOR         {return FOR;    }
 "/*"        {return COMINI;}
 "*/"        {return COMFIN;}    
-[0-9]+      { yylval.string_val = strdup(yytext); return NUM;    }
-[A-z0-9]*+  { yylval.string_val = strdup(yytext); return VAR;   }
+[0-9]+      { strcpy(yylval.cadena, yytext); return NUM;    }
+[A-z0-9]*+  { strcpy(yylval.cadena, yytext); return VAR;   }
 .           {}
 %%

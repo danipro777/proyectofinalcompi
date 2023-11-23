@@ -40,37 +40,38 @@
    enum yytokentype {
      VAR = 258,
      NUM = 259,
-     PUYCO = 260,
-     PI = 261,
-     PF = 262,
-     INIBLO = 263,
-     FINBLO = 264,
-     COMA = 265,
-     POT = 266,
-     SUMA = 267,
-     RESTA = 268,
-     DIV = 269,
-     MULT = 270,
-     MAYOR = 271,
-     MENOR = 272,
-     MAYORIG = 273,
-     MENORIG = 274,
-     IGIG = 275,
-     DIF = 276,
-     AND = 277,
-     OR = 278,
-     IGUAL = 279,
-     DEC = 280,
-     MAIN = 281,
-     INPUT = 282,
-     OUTPUT = 283,
+     DEC = 260,
+     MAIN = 261,
+     INPUT = 262,
+     OUTPUT = 263,
+     PUYCO = 264,
+     PI = 265,
+     PF = 266,
+     INIBLO = 267,
+     FINBLO = 268,
+     COMA = 269,
+     POT = 270,
+     SUMA = 271,
+     RESTA = 272,
+     DIV = 273,
+     MULT = 274,
+     MAYOR = 275,
+     MENOR = 276,
+     MAYORIG = 277,
+     MENORIG = 278,
+     IGIG = 279,
+     DIF = 280,
+     AND = 281,
+     OR = 282,
+     IGUAL = 283,
      IF = 284,
      ELSE = 285,
      THEN = 286,
      WHILE = 287,
      FOR = 288,
      COMINI = 289,
-     COMFIN = 290
+     COMFIN = 290,
+     MASMAS = 291
    };
 #endif
 
@@ -81,14 +82,14 @@ typedef union YYSTYPE
 {
 
 /* Line 1685 of yacc.c  */
-#line 9 "proyecto.y"
+#line 15 "proyecto.y"
 
-    char* string_val;
+    char cadena[50];
 
 
 
 /* Line 1685 of yacc.c  */
-#line 92 "proyecto.tab.h"
+#line 93 "proyecto.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
