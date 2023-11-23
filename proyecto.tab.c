@@ -71,19 +71,18 @@
 
 #include<stdio.h>  
 #include <stdlib.h>
+extern int yylex(void);
 void yyerror(char *mensaje);
-void nuevaTemp(char *s); //para generar nuevas variables temporales
-void nuevaLabel(char *s); //para generar nuevas variables label
-static int inComments=0, contLc=0, contLa=0, vIf[2][100], contPos=0;
-static int actualLabelAux=1, ifWhile=0, ifIf=0, ifFor=0;
-static int actualTempAux=1;
-int yylex();    
-void llavesApertura();
-void llavesAperturaIf();
+void nuevaTemp(char *s);
+void nuevaLabel(char *s);
+void llavesApertura(char *label, char *val);
+void llavesAperturaIf(char *label, char *val);
+
+static int actualLabelAux = 1, actualTempAux = 1;
 
 
 /* Line 189 of yacc.c  */
-#line 87 "proyecto.tab.c"
+#line 86 "proyecto.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -154,14 +153,14 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 15 "proyecto.y"
+#line 14 "proyecto.y"
 
     char cadena[50];
 
 
 
 /* Line 214 of yacc.c  */
-#line 165 "proyecto.tab.c"
+#line 164 "proyecto.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -173,7 +172,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 177 "proyecto.tab.c"
+#line 176 "proyecto.tab.c"
 
 #ifdef short
 # undef short
@@ -478,11 +477,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    29,    29,    29,    31,    31,    33,    33,    33,    33,
-      33,    33,    33,    35,    37,    39,    41,    43,    45,    48,
-      49,    52,    55,    57,    60,    65,    65,    67,    69,    70,
-      71,    73,    74,    75,    77,    78,    79,    81,    82,    83,
-      84,    85,    86,    87,    89,    90,    91,    93
+       0,    30,    30,    30,    32,    32,    34,    34,    34,    34,
+      34,    34,    34,    36,    38,    40,    42,    44,    47,    51,
+      52,    55,    58,    61,    64,    67,    67,    69,    72,    73,
+      74,    77,    78,    79,    82,    83,    84,    87,    88,    89,
+      90,    91,    92,    93,    96,    97,    98,   101
 };
 #endif
 
@@ -1467,238 +1466,245 @@ yyreduce:
         case 2:
 
 /* Line 1464 of yacc.c  */
-#line 29 "proyecto.y"
-    { printf("main:\n"); ;}
+#line 30 "proyecto.y"
+    { printf("section .text\n"); printf("global _start\n_start:\n"); ;}
     break;
 
   case 3:
 
 /* Line 1464 of yacc.c  */
-#line 29 "proyecto.y"
+#line 30 "proyecto.y"
     { printf("Programa correcto, Angely Thomas y Pablo Vasquez\n"); ;}
     break;
 
   case 14:
 
 /* Line 1464 of yacc.c  */
-#line 37 "proyecto.y"
-    { printf("call INPUT;\npop %s;\n", (yyvsp[(3) - (3)].cadena)); ;}
+#line 38 "proyecto.y"
+    { printf("call INPUT\npop %s\n", (yyvsp[(3) - (3)].cadena)); ;}
     break;
 
   case 15:
 
 /* Line 1464 of yacc.c  */
-#line 39 "proyecto.y"
-    { printf("push %s;\ncall OUTPUT;\n", (yyvsp[(2) - (3)].cadena)); ;}
+#line 40 "proyecto.y"
+    { printf("push %s\ncall OUTPUT\n", (yyvsp[(2) - (3)].cadena)); ;}
     break;
 
   case 16:
 
 /* Line 1464 of yacc.c  */
-#line 41 "proyecto.y"
-    { printf("%s=%s;\n", (yyvsp[(1) - (4)].cadena), (yyvsp[(3) - (4)].cadena)); ;}
+#line 42 "proyecto.y"
+    { printf("mov %s, %s\n", (yyvsp[(1) - (4)].cadena), (yyvsp[(3) - (4)].cadena)); ;}
     break;
 
   case 17:
 
 /* Line 1464 of yacc.c  */
-#line 43 "proyecto.y"
-    {llavesAperturaIf();;}
+#line 44 "proyecto.y"
+    { llavesAperturaIf(" ", "L"); ;}
     break;
 
   case 18:
 
 /* Line 1464 of yacc.c  */
-#line 45 "proyecto.y"
-    { llavesApertura();;}
+#line 47 "proyecto.y"
+    { llavesApertura(" ", "L"); ;}
     break;
 
   case 19:
 
 /* Line 1464 of yacc.c  */
-#line 48 "proyecto.y"
-    {;}
+#line 51 "proyecto.y"
+    { ;}
     break;
 
   case 20:
 
 /* Line 1464 of yacc.c  */
-#line 49 "proyecto.y"
-    {;}
+#line 52 "proyecto.y"
+    { ;}
     break;
 
   case 21:
 
 /* Line 1464 of yacc.c  */
-#line 52 "proyecto.y"
-    {nuevaLabel((yyval.cadena)); printf("GOTO #L%d\n", actualLabelAux); printf("%s: \n",(yyval.cadena));;}
+#line 55 "proyecto.y"
+    { nuevaLabel((yyval.cadena)); printf("cmp %s, 0\nje %s\n%s:\n", (yyvsp[(3) - (7)].cadena), (yyvsp[(3) - (7)].cadena), (yyval.cadena)); ;}
     break;
 
   case 22:
 
 /* Line 1464 of yacc.c  */
-#line 55 "proyecto.y"
-    {printf("GOTO #L%d\n", actualLabelAux);nuevaLabel((yyval.cadena)); printf("%s: \n",(yyval.cadena));nuevaLabel((yyval.cadena));;}
+#line 58 "proyecto.y"
+    { printf("jmp %s\n%s:\n", (yyvsp[(3) - (4)].cadena), (yyval.cadena)); ;}
     break;
 
   case 23:
 
 /* Line 1464 of yacc.c  */
-#line 57 "proyecto.y"
-    {  printf("GOTO #L%d\n", actualLabelAux);nuevaLabel((yyval.cadena)); printf("%s: \n",(yyval.cadena));nuevaLabel((yyval.cadena)); ;}
+#line 61 "proyecto.y"
+    { nuevaLabel((yyval.cadena)); printf("%s:\ncmp %s, 0\nje %s\n", (yyval.cadena), (yyvsp[(3) - (7)].cadena), (yyvsp[(3) - (7)].cadena)); ;}
     break;
 
   case 24:
 
 /* Line 1464 of yacc.c  */
-#line 60 "proyecto.y"
-    {  printf("GOTO #L%d\n", actualLabelAux);nuevaLabel((yyval.cadena)); printf("%s: \n",(yyval.cadena));nuevaLabel((yyval.cadena)); ;}
+#line 64 "proyecto.y"
+    { nuevaLabel((yyval.cadena)); printf("%s:\ncmp %s, 0\nje %s\n", (yyval.cadena), (yyvsp[(5) - (7)].cadena), (yyvsp[(5) - (7)].cadena)); ;}
+    break;
+
+  case 27:
+
+/* Line 1464 of yacc.c  */
+#line 69 "proyecto.y"
+    { printf("mov %s, %s\n", (yyvsp[(1) - (8)].cadena), (yyvsp[(5) - (8)].cadena)); ;}
     break;
 
   case 28:
 
 /* Line 1464 of yacc.c  */
-#line 69 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s && %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
+#line 72 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("and %s, %s\n", (yyval.cadena), (yyvsp[(3) - (3)].cadena)); ;}
     break;
 
   case 29:
 
 /* Line 1464 of yacc.c  */
-#line 70 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s || %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
+#line 73 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("or %s, %s\n", (yyval.cadena), (yyvsp[(3) - (3)].cadena)); ;}
     break;
 
   case 30:
 
 /* Line 1464 of yacc.c  */
-#line 71 "proyecto.y"
-    {;}
+#line 74 "proyecto.y"
+    { ;}
     break;
 
   case 31:
 
 /* Line 1464 of yacc.c  */
-#line 73 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s + %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
+#line 77 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("add %s, %s\n", (yyval.cadena), (yyvsp[(3) - (3)].cadena)); ;}
     break;
 
   case 32:
 
 /* Line 1464 of yacc.c  */
-#line 74 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s - %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
+#line 78 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("sub %s, %s\n", (yyval.cadena), (yyvsp[(3) - (3)].cadena)); ;}
     break;
 
   case 33:
-
-/* Line 1464 of yacc.c  */
-#line 75 "proyecto.y"
-    {;}
-    break;
-
-  case 34:
-
-/* Line 1464 of yacc.c  */
-#line 77 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s * %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
-    break;
-
-  case 35:
-
-/* Line 1464 of yacc.c  */
-#line 78 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s / %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
-    break;
-
-  case 36:
 
 /* Line 1464 of yacc.c  */
 #line 79 "proyecto.y"
     { ;}
     break;
 
+  case 34:
+
+/* Line 1464 of yacc.c  */
+#line 82 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("imul %s, %s\n", (yyval.cadena), (yyvsp[(3) - (3)].cadena)); ;}
+    break;
+
+  case 35:
+
+/* Line 1464 of yacc.c  */
+#line 83 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("idiv %s, %s\n", (yyval.cadena), (yyvsp[(3) - (3)].cadena)); ;}
+    break;
+
+  case 36:
+
+/* Line 1464 of yacc.c  */
+#line 84 "proyecto.y"
+    { ;}
+    break;
+
   case 37:
 
 /* Line 1464 of yacc.c  */
-#line 81 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s > %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
+#line 87 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("cmp %s, %s\nsetg %s\n", (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena), (yyval.cadena)); ;}
     break;
 
   case 38:
 
 /* Line 1464 of yacc.c  */
-#line 82 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s < %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
+#line 88 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("cmp %s, %s\nsetl %s\n", (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena), (yyval.cadena)); ;}
     break;
 
   case 39:
 
 /* Line 1464 of yacc.c  */
-#line 83 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s == %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
+#line 89 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("cmp %s, %s\nsete %s\n", (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena), (yyval.cadena)); ;}
     break;
 
   case 40:
 
 /* Line 1464 of yacc.c  */
-#line 84 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s >= %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
+#line 90 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("cmp %s, %s\nsetge %s\n", (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena), (yyval.cadena)); ;}
     break;
 
   case 41:
 
 /* Line 1464 of yacc.c  */
-#line 85 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s <= %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
+#line 91 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("cmp %s, %s\nsetle %s\n", (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena), (yyval.cadena)); ;}
     break;
 
   case 42:
 
 /* Line 1464 of yacc.c  */
-#line 86 "proyecto.y"
-    { nuevaTemp((yyval.cadena)); printf("%s = %s <> %s;\n", (yyval.cadena), (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena)); ;}
+#line 92 "proyecto.y"
+    { nuevaTemp((yyval.cadena)); printf("cmp %s, %s\nsetne %s\n", (yyvsp[(1) - (3)].cadena), (yyvsp[(3) - (3)].cadena), (yyval.cadena)); ;}
     break;
 
   case 43:
-
-/* Line 1464 of yacc.c  */
-#line 87 "proyecto.y"
-    {;}
-    break;
-
-  case 44:
-
-/* Line 1464 of yacc.c  */
-#line 89 "proyecto.y"
-    {  ;}
-    break;
-
-  case 45:
-
-/* Line 1464 of yacc.c  */
-#line 90 "proyecto.y"
-    { ;}
-    break;
-
-  case 46:
-
-/* Line 1464 of yacc.c  */
-#line 91 "proyecto.y"
-    { ;}
-    break;
-
-  case 47:
 
 /* Line 1464 of yacc.c  */
 #line 93 "proyecto.y"
     { ;}
     break;
 
+  case 44:
+
+/* Line 1464 of yacc.c  */
+#line 96 "proyecto.y"
+    { ;}
+    break;
+
+  case 45:
+
+/* Line 1464 of yacc.c  */
+#line 97 "proyecto.y"
+    { ;}
+    break;
+
+  case 46:
+
+/* Line 1464 of yacc.c  */
+#line 98 "proyecto.y"
+    { ;}
+    break;
+
+  case 47:
+
+/* Line 1464 of yacc.c  */
+#line 101 "proyecto.y"
+    { ;}
+    break;
+
 
 
 /* Line 1464 of yacc.c  */
-#line 1702 "proyecto.tab.c"
+#line 1708 "proyecto.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1910,18 +1916,18 @@ yyreturn:
 
 
 /* Line 1684 of yacc.c  */
-#line 95 "proyecto.y"
+#line 103 "proyecto.y"
 
 
 void nuevaTemp(char *s) {
     static int actualTemp = 1;
-    sprintf(s, "#t%d", actualTemp++);
+    sprintf(s, "t%d", actualTemp++);
     actualTempAux = actualTemp;
 }
 
 void nuevaLabel(char *s) {
     static int actualLabel = 1;
-    sprintf(s, "#l%d", actualLabel++);
+    sprintf(s, "L%d", actualLabel++);
     actualLabelAux = actualLabel;
 }
 
@@ -1933,10 +1939,12 @@ int main() {
     yyparse();
     return 0;
 }
-void llavesApertura(){
-      printf("#L%d: IFZ #t%d GOTO #L%d\n", actualLabelAux, actualTempAux, actualLabelAux);
+
+void llavesApertura(char *label, char *val) {
+    printf("%s: cmp %s, 0\nje %s\n%s:\n", label, val, val, label);
 }
-void llavesAperturaIf(){
-      printf("IFZ #t%d GOTO #L%d\n",  actualTempAux, actualLabelAux);
+
+void llavesAperturaIf(char *label, char *val) {
+    printf("%s: cmp %s, 0\nje %s\n%s:\n", label, val, val, label);
 }
 
