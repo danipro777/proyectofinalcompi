@@ -26,7 +26,7 @@ void llavesAperturaIf();
 
 %%
 
-programa: MAIN { printf("main:\n"); } INIBLO bloque FINBLO { printf("Sintaxis correcta, Angely Thomas y Pablo Vasquez\n"); };
+programa: MAIN { printf("main:\n"); } INIBLO bloque FINBLO { printf("Programa correcto, Angely Thomas y Pablo Vasquez\n"); };
 
 bloque: sentencia | bloque sentencia;
 
@@ -49,15 +49,15 @@ ifg : if                                              {}
     | if elses                                       {}
     ;
 
-if: IF PI andor PF llaves bloque FINBLO {nuevaLabel($$); printf("GOTO L%d\n", actualLabelAux); printf("%s: \n",$$);}
+if: IF PI andor PF llaves bloque FINBLO {nuevaLabel($$); printf("GOTO #L%d\n", actualLabelAux); printf("%s: \n",$$);}
     ;
 
-elses : ELSE INIBLO bloque FINBLO                                 {printf("GOTO L%d\n", actualLabelAux);nuevaLabel($$); printf("%s: \n",$$);nuevaLabel($$);}
+elses : ELSE INIBLO bloque FINBLO                                 {printf("GOTO #L%d\n", actualLabelAux);nuevaLabel($$); printf("%s: \n",$$);nuevaLabel($$);}
       ;
-while: WHILE PI condiciones PF llavesforwhile bloque FINBLO {  printf("GOTO L%d\n", actualLabelAux);nuevaLabel($$); printf("%s: \n",$$);nuevaLabel($$); }
+while: WHILE PI condiciones PF llavesforwhile bloque FINBLO {  printf("GOTO #L%d\n", actualLabelAux);nuevaLabel($$); printf("%s: \n",$$);nuevaLabel($$); }
     ;
 
-for: FOR PI condicionesfor PF llavesforwhile bloque FINBLO    {  printf("GOTO L%d\n", actualLabelAux);nuevaLabel($$); printf("%s: \n",$$);nuevaLabel($$); }
+for: FOR PI condicionesfor PF llavesforwhile bloque FINBLO    {  printf("GOTO #L%d\n", actualLabelAux);nuevaLabel($$); printf("%s: \n",$$);nuevaLabel($$); }
     ;
 
 //asifor: VAR IGUAL expresion PUYCO { printf("%s=%s;\n", $1, $3); };
@@ -96,13 +96,13 @@ vacio: { };
 
 void nuevaTemp(char *s) {
     static int actualTemp = 1;
-    sprintf(s, "t%d", actualTemp++);
+    sprintf(s, "#t%d", actualTemp++);
     actualTempAux = actualTemp;
 }
 
 void nuevaLabel(char *s) {
     static int actualLabel = 1;
-    sprintf(s, "l%d", actualLabel++);
+    sprintf(s, "#l%d", actualLabel++);
     actualLabelAux = actualLabel;
 }
 
@@ -115,8 +115,8 @@ int main() {
     return 0;
 }
 void llavesApertura(){
-      printf("L%d: IFZ t%d GOTO L%d\n", actualLabelAux, actualTempAux, actualLabelAux);
+      printf("#L%d: IFZ #t%d GOTO #L%d\n", actualLabelAux, actualTempAux, actualLabelAux);
 }
 void llavesAperturaIf(){
-      printf("IFZ t%d GOTO L%d\n",  actualTempAux, actualLabelAux);
+      printf("IFZ #t%d GOTO #L%d\n",  actualTempAux, actualLabelAux);
 }

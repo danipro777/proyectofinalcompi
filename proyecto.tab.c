@@ -1475,7 +1475,7 @@ yyreduce:
 
 /* Line 1464 of yacc.c  */
 #line 29 "proyecto.y"
-    { printf("Sintaxis correcta, Angely Thomas y Pablo Vasquez\n"); ;}
+    { printf("Programa correcto, Angely Thomas y Pablo Vasquez\n"); ;}
     break;
 
   case 14:
@@ -1531,28 +1531,28 @@ yyreduce:
 
 /* Line 1464 of yacc.c  */
 #line 52 "proyecto.y"
-    {nuevaLabel((yyval.cadena)); printf("GOTO L%d\n", actualLabelAux); printf("%s: \n",(yyval.cadena));;}
+    {nuevaLabel((yyval.cadena)); printf("GOTO #L%d\n", actualLabelAux); printf("%s: \n",(yyval.cadena));;}
     break;
 
   case 22:
 
 /* Line 1464 of yacc.c  */
 #line 55 "proyecto.y"
-    {printf("GOTO L%d\n", actualLabelAux);nuevaLabel((yyval.cadena)); printf("%s: \n",(yyval.cadena));nuevaLabel((yyval.cadena));;}
+    {printf("GOTO #L%d\n", actualLabelAux);nuevaLabel((yyval.cadena)); printf("%s: \n",(yyval.cadena));nuevaLabel((yyval.cadena));;}
     break;
 
   case 23:
 
 /* Line 1464 of yacc.c  */
 #line 57 "proyecto.y"
-    {  printf("GOTO L%d\n", actualLabelAux);nuevaLabel((yyval.cadena)); printf("%s: \n",(yyval.cadena));nuevaLabel((yyval.cadena)); ;}
+    {  printf("GOTO #L%d\n", actualLabelAux);nuevaLabel((yyval.cadena)); printf("%s: \n",(yyval.cadena));nuevaLabel((yyval.cadena)); ;}
     break;
 
   case 24:
 
 /* Line 1464 of yacc.c  */
 #line 60 "proyecto.y"
-    {  printf("GOTO L%d\n", actualLabelAux);nuevaLabel((yyval.cadena)); printf("%s: \n",(yyval.cadena));nuevaLabel((yyval.cadena)); ;}
+    {  printf("GOTO #L%d\n", actualLabelAux);nuevaLabel((yyval.cadena)); printf("%s: \n",(yyval.cadena));nuevaLabel((yyval.cadena)); ;}
     break;
 
   case 28:
@@ -1915,13 +1915,13 @@ yyreturn:
 
 void nuevaTemp(char *s) {
     static int actualTemp = 1;
-    sprintf(s, "t%d", actualTemp++);
+    sprintf(s, "#t%d", actualTemp++);
     actualTempAux = actualTemp;
 }
 
 void nuevaLabel(char *s) {
     static int actualLabel = 1;
-    sprintf(s, "l%d", actualLabel++);
+    sprintf(s, "#l%d", actualLabel++);
     actualLabelAux = actualLabel;
 }
 
@@ -1934,9 +1934,9 @@ int main() {
     return 0;
 }
 void llavesApertura(){
-      printf("L%d: IFZ t%d GOTO L%d\n", actualLabelAux, actualTempAux, actualLabelAux);
+      printf("#L%d: IFZ #t%d GOTO #L%d\n", actualLabelAux, actualTempAux, actualLabelAux);
 }
 void llavesAperturaIf(){
-      printf("IFZ t%d GOTO L%d\n",  actualTempAux, actualLabelAux);
+      printf("IFZ #t%d GOTO #L%d\n",  actualTempAux, actualLabelAux);
 }
 
